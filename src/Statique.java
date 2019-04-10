@@ -1,36 +1,17 @@
 import java.util.ArrayList;
-//import java.util.Scanner;
-import java.io.*;
+import java.util.HashMap;
+
+
 
 public class Statique {
-	
-	
-	public ArrayList<String> getText() throws IOException {
-		ArrayList<String> texte = new ArrayList<String>();
-		BufferedReader lect = new BufferedReader(new FileReader("E:/Info/java/Huffman/src/freq.txt"));
-		String ligne = null;
-		
-		while ((ligne = lect.readLine()) != null) {
-			//System.out.println(ligne);
-			texte.add(ligne);
-		}
-		return texte;
-	}
+/*  est ce utile ???
+	private ArrayList<String> texte;
+	private ArrayList<Node> tree;
+*/
 
+	
 
-// AUTRE METHODE POUR LIRE LE FICHIER
-/*	public ArrayList<String> getText() throws FileNotFoundException {
-		Scanner sc = new Scanner(new File("E:/Info/java/Huffman/src/freq.txt"));
-		while (sc.hasNextLine()) {
-			String s = sc.nextLine();
-			//System.out.println(s);
-			texte.add(s);
-		}
-		sc.close();
-		return texte;
-	}*/
-	
-	
+// cree les obj Node a partir d'un fichier txt de frequences
 	public ArrayList<Node> createNodes(ArrayList<String> txt) {
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		for(String ligne:txt) {
@@ -43,51 +24,62 @@ public class Statique {
 	}
 	
 
-// recupere les indices des noeuds ayant les 2 plus petites frequences
-	public ArrayList<Integer> get2minima(ArrayList<Node> nodes) {  //liste de noeuds (de longueur supposée >= 2)
-		ArrayList<Integer> minima = new ArrayList<Integer>();
-		minima.add(0);
-		minima.add(1);
+// retourne le noeud ayant la plus petite frequence
+	public Node getMinima(ArrayList<Node> nodes) { 
+		Node minima = nodes.get(0);
 		
-		for (int i=2; i< nodes.size(); i++) {
-			if (nodes.get(i).getFreq()<nodes.get(minima.get(0)).getFreq()) {
-				minima.set(0, i);  // modification de la premiere valeur des minimas
-			}
-			else if (nodes.get(i).getFreq()<nodes.get(minima.get(1)).getFreq()) {
-				minima.set(1, i);
+		for (int i=1; i< nodes.size(); i++) {
+			if (nodes.get(i).getFreq()<minima.getFreq()) {
+				minima = nodes.get(i);  
 			}
 		}
 		
-		return minima; // retourne l'indice des minimas
+		return minima;
+	}
+
+
+// retourne une liste de noeuds ordonnees (par rapport aux frequences)	
+	public ArrayList<Node> orderNodes(ArrayList<Node> nodes) {
+		ArrayList<Node> orderedNodes = new ArrayList<Node>();
+		while (nodes.size()>0) {
+			Node minima = getMinima(nodes);
+			orderedNodes.add(minima);
+			nodes.remove(minima);
+		}
+		return orderedNodes;
 	}
 	
 	
 	
 // cree l'arbre	des frequences
 	public ArrayList<Node> createTree(ArrayList<Node> nodes) {
-		ArrayList<Node> nodes_to_process = new ArrayList<Node>(nodes);
 		ArrayList<Node> tree = new ArrayList<Node>();
+		ArrayList<Node> nodes_to_process = orderNodes(nodes);
 		
-		while (nodes_to_process.size()>1) {
-			ArrayList<Integer> minima = get2minima(nodes_to_process);
-			Node n1 = nodes_to_process.get(minima.get(0));  // on recupere les 2 noeuds ayant les plus petites fréquences
-			Node n2 = nodes_to_process.get(minima.get(1));
+		Node currentFather = nodes_to_process.get(0);
+		
+		for (int i=1; i<nodes_to_process.size(); i++) {
+			Node father = new Node(null, nodes_to_process.get(i).getFreq()+currentFather.getFreq(), nodes_to_process.get(i), currentFather);
+			tree.add(currentFather);
+			tree.add(nodes_to_process.get(i));
+			currentFather = father;
 			
-			Node father = new Node(null, n1.getFreq()+n2.getFreq(), n1, n2);  // creation du noeud pere
-			
-			tree.add(n1); // j'ajoute les noeuds a mon arbre
-			tree.add(n2);
-			
-			nodes_to_process.remove(n1); // et je les supprime des noeuds a traiter
-			nodes_to_process.remove(n2);
-			
-			nodes_to_process.add(father); // j'ajoute le pere aux noeuds a traiter
 		}
+		tree.add(currentFather);
 		
-		
-		tree.add(nodes_to_process.get(0)); // j'ajoute la racine (le seul noeud qu'il reste a traiter) a mon arbre
-	
 		return tree;
 	}
 
+
+// cree le code (ex: A devient 10) a partir de l'arbre des frequences
+	public HashMap defineCode(ArrayList<Node> tree) {
+		HashMap map = new HashMap(); // equivalent des dictionnaires en python
+		
+		
+		return map;
+	}
+	
+	
 }
+
+
