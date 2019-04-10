@@ -71,6 +71,23 @@ public class Statique {
 	}
 
 
+	
+	
+	public String getBits(Node n, String caracter) {
+		if (n.getName() == caracter) {
+			return "";
+		}
+		else if (n.getLeftChild().getName() == caracter) {
+			return "0";
+		}
+		else {
+			return "1" + getBits(n.getRightChild(), caracter);
+		}
+	}
+
+	
+	
+	
 // cree le code (ex: A devient 10) a partir de l'arbre des frequences
 	public HashMap defineCode(ArrayList<Node> tree) {
 		HashMap map = new HashMap(); // equivalent des dictionnaires en python

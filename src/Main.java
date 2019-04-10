@@ -20,7 +20,9 @@ public class Main {
 			System.out.println(n.getName() +" " + n.getFreq());
 		}
 		
-		
+		Node root = tree.get(tree.size()-1);
+		String bits = code.getBits(root, "D");
+		System.out.println(bits);
 		
 		
 	}
