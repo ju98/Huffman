@@ -10,6 +10,14 @@ public class Main {
 		ArrayList<String> texte = code.getText();
 		System.out.println(texte);
 		ArrayList<Node> nodes = code.createNodes(texte);
-		System.out.println(nodes.get(0).getFreq());
+		
+		//System.out.println(nodes.get(0).getFreq());
+		
+		//System.out.println(code.get2minima(nodes));
+		
+		ArrayList<Node> tree = code.createTree(nodes);
+		for (Node n:tree) {
+			System.out.println(n.getFreq());
+		}
 	}
 }

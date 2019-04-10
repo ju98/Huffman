@@ -1,7 +1,7 @@
 
 public class Node {
-	private String name;
-	private int freq;
+	private String name; // correspond a la letrre
+	private int freq;  // frequence de la lettre
 	private Node leftChild;
 	private Node rightChild;
 	

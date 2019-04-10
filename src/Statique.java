@@ -42,30 +42,51 @@ public class Statique {
 		return nodes;
 	}
 	
-	
-	public ArrayList<int> get2minima(ArrayList<Node> nodes) {  //liste de noeuds de longueur supposée >= 2
-		ArrayList<int> minima = new ArrayList<int>();
+
+// recupere les indices des noeuds ayant les 2 plus petites frequences
+	public ArrayList<Integer> get2minima(ArrayList<Node> nodes) {  //liste de noeuds (de longueur supposée >= 2)
+		ArrayList<Integer> minima = new ArrayList<Integer>();
 		minima.add(0);
 		minima.add(1);
 		
 		for (int i=2; i< nodes.size(); i++) {
-			/* en python : if nodes[i].freq < nodes[minima[0]]: 
-			 * minima[0] = nodes[i].freq
-			 * elif nodes[i].freq < nodes[minima[1]] :
-			 * minima[1] = nodes[i].freq
-			 * */
+			if (nodes.get(i).getFreq()<nodes.get(minima.get(0)).getFreq()) {
+				minima.set(0, i);  // modification de la premiere valeur des minimas
+			}
+			else if (nodes.get(i).getFreq()<nodes.get(minima.get(1)).getFreq()) {
+				minima.set(1, i);
+			}
 		}
 		
 		return minima; // retourne l'indice des minimas
 	}
 	
 	
+	
+// cree l'arbre	des frequences
 	public ArrayList<Node> createTree(ArrayList<Node> nodes) {
-		ArrayList<Node> tree = new ArrayList<Node>(nodes);
+		ArrayList<Node> nodes_to_process = new ArrayList<Node>(nodes);
+		ArrayList<Node> tree = new ArrayList<Node>();
 		
-		// creer l'arbre a l'aide de la fonction get2minima
+		while (nodes_to_process.size()>1) {
+			ArrayList<Integer> minima = get2minima(nodes_to_process);
+			Node n1 = nodes_to_process.get(minima.get(0));  // on recupere les 2 noeuds ayant les plus petites fréquences
+			Node n2 = nodes_to_process.get(minima.get(1));
+			
+			Node father = new Node(null, n1.getFreq()+n2.getFreq(), n1, n2);  // creation du noeud pere
+			
+			tree.add(n1); // j'ajoute les noeuds a mon arbre
+			tree.add(n2);
+			
+			nodes_to_process.remove(n1); // et je les supprime des noeuds a traiter
+			nodes_to_process.remove(n2);
+			
+			nodes_to_process.add(father); // j'ajoute le pere aux noeuds a traiter
+		}
 		
 		
+		tree.add(nodes_to_process.get(0)); // j'ajoute la racine (le seul noeud qu'il reste a traiter) a mon arbre
+	
 		return tree;
 	}
 
