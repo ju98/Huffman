@@ -1,13 +1,8 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 
 public class Statique {
-/*  est ce utile ???
-	private ArrayList<String> texte;
-	private ArrayList<Node> tree;
-*/
 
 	
 
@@ -72,28 +67,31 @@ public class Statique {
 
 
 	
-	
+// retourne le code correspondant à un caractere en parcourrant l'arbre	
 	public String getBits(Node n, String caracter) {
-		if (n.getName() == caracter) {
-			return "";
-		}
-		else if (n.getLeftChild().getName() == caracter) {
+
+		if (n.getLeftChild().getName().equals(caracter))
 			return "0";
-		}
-		else {
+
+		else if (n.getRightChild().getName()==null)  // si le fils droit est nul alors l'arbre continue et on reprend donc la fonction avec ce fils
 			return "1" + getBits(n.getRightChild(), caracter);
-		}
+		
+		else  // si c'est la dernière feuille de l'arbre
+			return "1";
 	}
 
 	
 	
-	
-// cree le code (ex: A devient 10) a partir de l'arbre des frequences
-	public HashMap defineCode(ArrayList<Node> tree) {
-		HashMap map = new HashMap(); // equivalent des dictionnaires en python
+// code le texte a partir de la racine de l'arbre
+	public String encode(Node n, String texte) {
+		String code = "";
+
+		for (int i=0; i<texte.length(); i++) {
+			String bits = getBits(n, Character.toString(texte.charAt(i)));
+			code = code + bits;
+		}
 		
-		
-		return map;
+		return code;
 	}
 	
 	
