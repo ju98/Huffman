@@ -86,8 +86,8 @@ public class Statique {
 	public String encode(Node n, String texte) {
 		String code = "";
 
-		for (int i=0; i<texte.length(); i++) {
-			String bits = getBits(n, Character.toString(texte.charAt(i)));
+		for (int i=0; i<texte.length(); i++) {  //parcoure chaque caractere du texte et le code
+			String bits = getBits(n, Character.toString(texte.charAt(i)));  // Character.toString convertit un caractere en String
 			code = code + bits;
 		}
 		
