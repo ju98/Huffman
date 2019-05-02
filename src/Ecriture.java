@@ -25,4 +25,8 @@ public class Ecriture {
 		code_binaire.close();
 	}
 
+	
+	public void compression(String code) {
+		
+	}
 }
