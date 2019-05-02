@@ -15,5 +15,14 @@ public class Ecriture {
 		
 		freq.close();
 	}
+	
+	
+	
+	//ecriture du texte binaire
+	public void ecritureBin(String code) throws FileNotFoundException {
+		PrintWriter code_binaire = new PrintWriter("code_binaire.txt");
+		code_binaire.println(code);
+		code_binaire.close();
+	}
 
 }

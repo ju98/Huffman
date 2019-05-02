@@ -9,7 +9,21 @@ public class Statique {
 // cree les obj Node a partir d'un fichier txt de frequences
 	public ArrayList<Node> createNodes(ArrayList<String> txt) {
 		ArrayList<Node> nodes = new ArrayList<Node>();
+		
+		if (txt.get(0).equals("")) { //traite les 2 premieres lignes correspondant au caractere \n
+			String name = "\n";
+			int freq = Integer.valueOf(txt.get(1).substring(1));
+			Node node = new Node(name, freq, null, null);
+			nodes.add(node);
+			
+			txt.remove(0);
+			txt.remove(1);
+		}
+		
+		
+		
 		for(String ligne:txt) {
+				
 			String name = String.valueOf(ligne.charAt(0));
 			int freq = Integer.valueOf(ligne.substring(2));
 			Node node = new Node(name, freq, null, null);
